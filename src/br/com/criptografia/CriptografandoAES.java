@@ -1,5 +1,7 @@
 package br.com.criptografia;
 
+import java.io.UnsupportedEncodingException;
+
 import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
@@ -8,7 +10,7 @@ public class CriptografandoAES {
 
 	static String IV = "AAAAAAAAAAAAAAAA";
 	static String textopuro = "teste texto 12345678\0\0\0";
-	static String chaveencriptacao = "0123456789abcdef";
+	static String chaveencriptacao = "1234567891011121";
 
 	public static void main(String[] args) {
 
@@ -17,8 +19,10 @@ public class CriptografandoAES {
 			System.out.println("Texto Puro: " + textopuro);
 
 			byte[] textoencriptado = encrypt(textopuro, chaveencriptacao);
-
-			System.out.print("Texto Encriptado: \n" + textoencriptado.toString());
+			
+			String msgDecode = GeradorDeChave.transformaByteEmString(textoencriptado);
+			System.out.println("STRING RECEBIDO: " + msgDecode);
+			System.out.print("Texto Encriptado: \n");
 
 			for (int i = 0; i < textoencriptado.length; i++)
 				System.out.print(new Integer(textoencriptado[i]) + " ");
@@ -33,6 +37,9 @@ public class CriptografandoAES {
 			e.printStackTrace();
 		}
 	}
+
+
+	
 
 	public static byte[] encrypt(String textopuro, String chaveencriptacao) throws Exception {
 		Cipher encripta = Cipher.getInstance("AES/CBC/PKCS5Padding", "SunJCE");
